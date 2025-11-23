@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload API Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖼️</text></svg>">
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 mb-6">
+                <div class="text-3xl">🖼️</div>
+            </div>
+            <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Image Upload API
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                Test multiple image hosting providers with one simple interface
+            </p>
+        </header>
+        
+        <div class="max-w-4xl mx-auto">
+            <!-- Upload Section -->
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 mb-8">
+                <h2 class="text-3xl font-semibold mb-6 text-center">Upload Your Image</h2>
+                
+                <!-- Provider Selection -->
+                <div class="mb-6">
+                    <label class="block text-lg font-medium text-gray-300 mb-3">Select Provider</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <div class="provider-option" data-provider="deline">
+                            <div class="bg-indigo-500/20 border-2 border-indigo-500 rounded-xl p-4 text-center cursor-pointer transition-all duration-300 hover:border-indigo-400">
+                                <div class="font-semibold text-white">Deline</div>
+                                <div class="text-indigo-300 text-sm">Fast Indonesian CDN</div>
+                            </div>
+                        </div>
+                        <div class="provider-option" data-provider="uguu">
+                            <div class="bg-teal-500/20 border-2 border-teal-500 rounded-xl p-4 text-center cursor-pointer transition-all duration-300 hover:border-teal-400">
+                                <div class="font-semibold text-white">Uguu</div>
+                                <div class="text-teal-300 text-sm">Simple file hosting</div>
+                            </div>
+                        </div>
+                        <div class="provider-option" data-provider="catbox">
+                            <div class="bg-pink-500/20 border-2 border-pink-500 rounded-xl p-4 text-center cursor-pointer transition-all duration-300 hover:border-pink-400">
+                                <div class="font-semibold text-white">CatBox</div>
+                                <div class="text-pink-300 text-sm">Anonymous hosting</div>
+                            </div>
+                        </div>
+                        <div class="provider-option" data-provider="quax">
+                            <div class="bg-green-500/20 border-2 border-green-500 rounded-xl p-4 text-center cursor-pointer transition-all duration-300 hover:border-green-400">
+                                <div class="font-semibold text-white">Quax</div>
+                                <div class="text-green-300 text-sm">Anonymous upload</div>
+                            </div>
+                        </div>
+                        <div class="provider-option" data-provider="nekohime">
+                            <div class="bg-purple-500/20 border-2 border-purple-500 rounded-xl p-4 text-center cursor-pointer transition-all duration-300 hover:border-purple-400">
+                                <div class="font-semibold text-white">Nekohime</div>
+                                <div class="text-purple-300 text-sm">Anime-themed CDN</div>
+                            </div>
+                        </div>
+                        <div class="provider-option" data-provider="nauval">
+                            <div class="bg-orange-500/20 border-2 border-orange-500 rounded-xl p-4 text-center cursor-pointer transition-all duration-300 hover:border-orange-400">
+                                <div class="font-semibold text-white">Nauval</div>
+                                <div class="text-orange-300 text-sm">Cloud storage</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="border-2 border-dashed border-gray-600 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-gray-500 mb-4"
+                     id="dropArea">
+                    <input type="file" id="fileInput" class="hidden" accept="image/*">
+                    <div class="py-8" id="uploadPlaceholder">
+                        <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-3">Drop your image here</h3>
+                        <p class="text-gray-400 text-lg mb-6">
+                            or <span class="text-blue-400 font-medium">click to browse</span>
+                        </p>
+                        <div class="flex justify-center items-center space-x-6 text-sm text-gray-500">
+                            <span>JPG</span>
+                            <span>PNG</span>
+                            <span>GIF</span>
+                            <span>WEBP</span>
+                            <span>Max 32MB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selected Provider & Upload Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div id="selectedProvider" class="text-lg font-semibold text-gray-300 hidden">
+                        Selected: <span id="providerName" class="text-white"></span>
+                    </div>
+                    <button id="uploadBtn" 
+                            class="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                        Upload Image
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="resultSection" class="hidden bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 mb-8">
+                <h2 class="text-3xl font-semibold mb-6 text-center">Upload Result</h2>
+                <div id="resultContent"></div>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="hidden text-center py-12">
+                <div class="inline-flex flex-col items-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
+                    <span class="text-xl text-gray-300">Uploading to <span id="loadingProvider" class="text-white font-semibold"></span>...</span>
+                    <p class="text-gray-400 mt-2">Please wait while we process your image</p>
+                </div>
+            </div>
+
+            <!-- API Info -->
+            <div class="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-6">
+                <h3 class="text-xl font-semibold text-blue-300 mb-3">API Information</h3>
+                <p class="text-blue-200 mb-2">Base URL: <code class="bg-blue-500/20 px-2 py-1 rounded">http://localhost:3000/api</code></p>
+                <p class="text-blue-200">Endpoints: <code class="bg-blue-500/20 px-2 py-1 rounded">/deline, /uguu, /catbox, /quax, /nekohime, /nauval</code></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFile = null;
+        let selectedProvider = null;
+
+        // DOM Elements
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const resultSection = document.getElementById('resultSection');
+        const resultContent = document.getElementById('resultContent');
+        const loading = document.getElementById('loading');
+        const loadingProvider = document.getElementById('loadingProvider');
+        const selectedProviderDiv = document.getElementById('selectedProvider');
+        const providerName = document.getElementById('providerName');
+
+        // Provider selection
+        document.querySelectorAll('.provider-option').forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove previous selection
+                document.querySelectorAll('.provider-option > div').forEach(div => {
+                    div.classList.remove('border-2', 'border-white/40', 'bg-white/20');
+                });
+
+                // Add selection to clicked option
+                const div = option.querySelector('div');
+                div.classList.add('border-2', 'border-white/40', 'bg-white/20');
+                
+                selectedProvider = option.dataset.provider;
+                selectedProviderDiv.classList.remove('hidden');
+                providerName.textContent = option.querySelector('.font-semibold').textContent;
+                
+                updateUploadButton();
+            });
+        });
+
+        // Drag and drop handlers
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.add('border-blue-500', 'bg-blue-500/10');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.remove('border-blue-500', 'bg-blue-500/10');
+            }, false);
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    if (file.size > 32 * 1024 * 1024) {
+                        alert('File size too large. Maximum size is 32MB');
+                        return;
+                    }
+                    
+                    currentFile = file;
+                    dropArea.innerHTML = `
+                        <div class="flex flex-col items-center">
+                            <div class="relative mb-4 group">
+                                <img src="${URL.createObjectURL(file)}" alt="Preview" 
+                                     class="max-h-64 rounded-2xl shadow-2xl transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <p class="text-gray-300 text-lg">${file.name}</p>
+                            <p class="text-gray-400">${(file.size / 1024).toFixed(1)} KB</p>
+                        </div>
+                    `;
+                    updateUploadButton();
+                } else {
+                    alert('Please select a valid image file (JPG, PNG, GIF, etc.)');
+                }
+            }
+        }
+
+        function updateUploadButton() {
+            uploadBtn.disabled = !(currentFile && selectedProvider);
+        }
+
+        uploadBtn.addEventListener('click', async () => {
+            if (!currentFile || !selectedProvider) {
+                alert('Please select both a file and a provider');
+                return;
+            }
+
+            loadingProvider.textContent = providerName.textContent;
+            loading.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            uploadBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('file', currentFile);
+
+                const response = await fetch(`/api/${selectedProvider}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    resultContent.innerHTML = `
+                        <div class="bg-green-500/10 border border-green-500/30 rounded-2xl p-6 mb-6">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-green-300">Upload Successful!</h3>
+                            </div>
+                            <div class="text-center text-green-200">
+                                <p class="text-lg">Your image has been uploaded to <span class="font-semibold text-white">${data.provider}</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Image URL</label>
+                                <div class="flex">
+                                    <input type="text" value="${data.url}" readonly 
+                                           class="flex-1 bg-gray-700 border border-gray-600 rounded-l-xl px-4 py-3 text-white text-lg font-mono">
+                                    <button onclick="copyToClipboard('${data.url}')" 
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-r-xl transition-all duration-300 font-semibold">
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-center space-x-4">
+                                <a href="${data.url}" target="_blank" 
+                                   class="inline-flex items-center bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                    Open Image
+                                </a>
+                                <button onclick="uploadAnother()" 
+                                        class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                    </svg>
+                                    Upload Another
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="bg-red-500/10 border border-red-500/30 rounded-2xl p-6">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-semibold text-red-300">Upload Failed</h3>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-red-200 text-lg mb-2">Error: ${data.error}</p>
+                                <p class="text-red-300">Provider: ${data.provider}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                resultSection.classList.remove('hidden');
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="bg-red-500/10 border border-red-500/30 rounded-2xl p-6">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+                                <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-red-300">Network Error</h3>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-red-200 text-lg">${error.message}</p>
+                        </div>
+                    </div>
+                `;
+                resultSection.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+                uploadBtn.disabled = false;
+            }
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show temporary success message
+                const originalText = uploadBtn.textContent;
+                uploadBtn.textContent = '✓ Copied!';
+                uploadBtn.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                uploadBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+                
+                setTimeout(() => {
+                    uploadBtn.textContent = originalText;
+                    uploadBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    uploadBtn.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                }, 2000);
+            });
+        }
+
+        function uploadAnother() {
+            currentFile = null;
+            selectedProvider = null;
+            selectedProviderDiv.classList.add('hidden');
+            
+            // Reset drop area
+            dropArea.innerHTML = document.getElementById('uploadPlaceholder').outerHTML;
+            
+            // Reset provider selection
+            document.querySelectorAll('.provider-option > div').forEach(div => {
+                div.classList.remove('border-2', 'border-white/40', 'bg-white/20');
+            });
+            
+            resultSection.classList.add('hidden');
+            updateUploadButton();
+        }
+
+        // Initialize
+        updateUploadButton();
+    </script>
+</body>
+</html>
